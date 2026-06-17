@@ -1,15 +1,15 @@
-name: 🚀 Production Deployment Pipeline
+name: 🏰 Production Deployment
 
 on:
   workflow_run:
-    workflows: ["⛑️ Pre-Deployment Security Gates"]
+    workflows: ["🏰 Snyk AI Code Scans"]
     types:
       - completed
 
 env:
   AWS_REGION: "eu-west-1"
-  EKS_CLUSTER_NAME: "threat-detection-cluster"
-  ECR_REPOSITORY: "threat-detection-app"
+  EKS_CLUSTER_NAME: "fintech-ledger-cluster"
+  ECR_REPOSITORY: "fintech-ledger-app"
 
 jobs:
   build-and-deploy:
@@ -51,5 +51,5 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f kubernetes/prod-flask-app`.yaml
-          kubectl rollout restart deployment/threat-detection-app
+          kubectl apply -f kubernetes/prod-fintech-ledger-app.yaml
+          kubectl rollout restart deployment/fintech-ledger-app

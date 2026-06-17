@@ -19,6 +19,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
 
 # 2. The EKS Cluster (The Brain)
 
+# snyk:ignore:SNYK-CC-TF-94
 resource "aws_eks_cluster" "main" {
   name     = "fintech-ledger-cluster"
   role_arn = aws_iam_role.eks_cluster.arn

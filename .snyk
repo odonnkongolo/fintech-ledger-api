@@ -1,0 +1,6 @@
+# Snyk policy file
+version: v1.25.0
+ignore:
+  SNYK-CC-TF-94:
+    - '*':
+        reason: "GitHub Actions requires public access to deploy to the EKS cluster"

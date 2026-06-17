@@ -1,15 +1,15 @@
-name: 🤖 Snyk AI Code Scans
+name: 🏰 Snyk AI Code Scans
 
 on:
   workflow_run:
-    workflows: ["🔴 Static Code Checks Linting and Scanning"]
+    workflows: ["🏰 Static Code Checks Linting and Scanning"]
     types:
       - completed
 
 env:
   AWS_REGION: "eu-west-1"
-  EKS_CLUSTER_NAME: "threat-detection-cluster"
-  ECR_REPOSITORY: "threat-detection-app"
+  EKS_CLUSTER_NAME: "fintech-ledger-cluster"
+  ECR_REPOSITORY: "fintech-ledger-app"
 
 jobs:
   snyk-scans:

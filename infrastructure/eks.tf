@@ -17,7 +17,19 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
   role       = aws_iam_role.eks_cluster.name
 }
 
-# 2. The EKS Cluster (The Brain)
+# 2. KMS Key for EKS Secrets Encryption
+
+resource "aws_kms_key" "eks_secrets" {
+  description             = "KMS key for EKS cluster secrets encryption"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+
+  tags = {
+    Name = "fintech-ledger-eks-secrets-key"
+  }
+}
+
+# 3. The EKS Cluster (The Brain)
 
 resource "aws_eks_cluster" "main" {
   name     = "fintech-ledger-cluster"
@@ -31,7 +43,17 @@ resource "aws_eks_cluster" "main" {
       aws_subnet.public_2.id
     ]
   }
-  # Add this block right here for new API access:
+
+  # Encrypt Kubernetes secrets at rest (SNYK-CC-TF-107)
+  encryption_config {
+    provider {
+      key_arn = aws_kms_key.eks_secrets.arn
+    }
+    resources = ["secrets"]
+  }
+
+  # Enable all control plane log types (SNYK-CC-TF-131)
+  enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   access_config {
     authentication_mode                         = "API_AND_CONFIG_MAP"

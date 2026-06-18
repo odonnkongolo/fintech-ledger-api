@@ -21,6 +21,22 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 7777
+        livenessProbe:
+          httpGet:
+            path: /transaction-status
+            port: 7777
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        securityContext:
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
 
 ---
 # 2. The Service: Commands AWS to build a Load Balancer so the public can reach the app
